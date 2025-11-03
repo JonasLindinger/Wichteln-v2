@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,9 +23,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40),
-              RedBigButton("Gruppe erstellen"),
+              RedBigButton("Gruppe erstellen", context, openCreateGroupPage),
               SizedBox(height: 20),
-              RedBigButton("Gruppe ansehen"),
+              RedBigButton("Gruppe ansehen", context, openViewGroupPage),
             ],
           ),
         ),
@@ -32,7 +33,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget RedBigButton(String name) {
+  void openCreateGroupPage(BuildContext context) {
+    GoRouter.of(context).go("/create");
+  }
+
+  void openViewGroupPage(BuildContext context) {
+    GoRouter.of(context).go("/group");
+  }
+
+  Widget RedBigButton(String name, BuildContext context, void Function(BuildContext context) onClick) {
     return SizedBox(
       width: double.infinity,
       height: 55,
@@ -49,7 +58,9 @@ class HomePage extends StatelessWidget {
           ),
           elevation: 2,
         ),
-        onPressed: () {},
+        onPressed: () {
+          onClick(context);
+        },
         child: Text(name),
       ),
     );
