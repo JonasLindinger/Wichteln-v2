@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:wichteln/pages/create.dart';
 import 'package:wichteln/pages/home.dart';
+import 'package:wichteln/utils/jsonUtils.dart';
 
 /*
 Colors
@@ -13,7 +15,7 @@ FFF2E8CF
 FFBC4749
 */
 
-void main() {
+void main() async {
   setUrlStrategy(PathUrlStrategy());
 
   final router = GoRouter(
@@ -39,6 +41,13 @@ void main() {
       */
     ],
   );
+
+  // Make sure widgets are bound before loading env
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load the .env file
+  await dotenv.load(fileName: ".env");
+  GroupStorage.SetUp();
 
   runApp(
     MaterialApp.router(

@@ -1,9 +1,15 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class GroupStorage {
-  static const String _baseUrl = 'https://api.jsonbin.io/v3/b/YOUR_BIN_ID';
-  static const String _apiKey = 'YOUR_SECRET_KEY';
+  static String _baseUrl = 'https://api.jsonbin.io/v3/b/';
+  static String _apiKey = 'YOUR_SECRET_KEY';
+
+  static void SetUp() {
+    _baseUrl += dotenv.env["BIN_ID"]!;
+    _apiKey = dotenv.env["API_KEY"]!;
+  }
 
   /// Loads all groups and returns one by name (or null if not found)
   static Future<Map<String, dynamic>?> loadGroup(String name) async {
