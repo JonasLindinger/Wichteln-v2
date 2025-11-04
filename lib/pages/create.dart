@@ -9,7 +9,7 @@ class CreateGroupPage extends StatefulWidget {
 
 class _CreateGroupPageState extends State<CreateGroupPage> {
   final TextEditingController controller = TextEditingController();
-  var members = [];
+  List<String> members = [];
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +86,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                           color: Color(0xFF386641),
                           padding: EdgeInsets.all(10),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 name,
@@ -94,6 +95,17 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                                   fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.remove_circle_outline_outlined,
+                                    color: Color(0xFFBC4749),
+                                  ),
+                                  onPressed: () {
+                                    removeMember(name);
+                                  }
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -103,13 +115,19 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 ),
               ),
               SizedBox(height: 20),
-              RedBigButton("Gruppe erstellen"),
+              RedBigButton("Gruppe erstellen", () {
+                createGroup(members);
+              }),
               SizedBox(height: 20),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void createGroup(List<String> members) {
+
   }
 
   void addMember() {
@@ -124,7 +142,15 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
     setState(() {});
   }
 
-  Widget RedBigButton(String name) {
+  void removeMember(String name) {
+    if (name.isEmpty || !members.contains(name)) return;
+
+    members.remove(name);
+
+    setState(() {});
+  }
+
+  Widget RedBigButton(String name, void Function() onClick) {
     return SizedBox(
       width: double.infinity,
       height: 55,
@@ -141,7 +167,9 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
           ),
           elevation: 2,
         ),
-        onPressed: () {},
+        onPressed: () {
+          onClick();
+        },
         child: Text(name),
       ),
     );
